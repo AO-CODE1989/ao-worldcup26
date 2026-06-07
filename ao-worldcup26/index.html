@@ -19,17 +19,13 @@
     background-size:44px 44px}
   button{cursor:pointer;font-family:inherit;transition:all .15s}
   button:disabled{cursor:wait;opacity:.6}
-  input{font-family:inherit}
 </style>
 </head>
 <body>
 <div class="stars"></div>
 <div id="root"></div>
 <script type="text/babel">
-const { useState, useEffect, useCallback } = React;
-
-/* ── FLAGS ─────────────────────────────────────────────── */
-const FLAGS = {
+const { useState, useEffect, useCallback } = React;const FLAGS = {
   "Mexique":"🇲🇽","Afrique du Sud":"🇿🇦","Corée du Sud":"🇰🇷","Tchéquie":"🇨🇿",
   "Canada":"🇨🇦","Bosnie-Herzégovine":"🇧🇦","Qatar":"🇶🇦","Suisse":"🇨🇭",
   "Brésil":"🇧🇷","Maroc":"🇲🇦","Haïti":"🇭🇹","Écosse":"🏴󠁧󠁢󠁳󠁣󠁴󠁿",
@@ -45,7 +41,6 @@ const FLAGS = {
 };
 const f = t => FLAGS[t] || "🏳";
 
-/* ── MATCHES ────────────────────────────────────────────── */
 const MATCHES = [
   {id:1,date:"Jeu 11 juin",isoDate:"2026-06-11",group:"A",home:"Mexique",away:"Afrique du Sud",time:"21h00",venue:"Estadio Azteca",city:"Mexico City"},
   {id:2,date:"Jeu 11 juin",isoDate:"2026-06-11",group:"A",home:"Corée du Sud",away:"Tchéquie",time:"04h00★",venue:"Estadio Akron",city:"Zapopan"},
@@ -94,8 +89,7 @@ const MATCHES = [
   {id:45,date:"Mar 23 juin",isoDate:"2026-06-23",group:"K",home:"Portugal",away:"Ouzbékistan",time:"19h00",venue:"NRG Stadium",city:"Houston"},
   {id:46,date:"Mar 23 juin",isoDate:"2026-06-23",group:"L",home:"Angleterre",away:"Ghana",time:"22h00",venue:"Gillette Stadium",city:"Boston"},
   {id:47,date:"Mar 23 juin",isoDate:"2026-06-23",group:"L",home:"Panama",away:"Croatie",time:"01h00★",venue:"BMO Field",city:"Toronto"},
-  {id:48,date:"Mar 23 juin",isoDate:"2026-06-23",group:"K",home:"Colombie",away:"Congo RD",time:"04h00★",venue:"Estadio Akron",city:"Zapopan"},
-  {id:49,date:"Mer 24 juin",isoDate:"2026-06-24",group:"B",home:"Suisse",away:"Canada",time:"21h00",venue:"BC Place",city:"Vancouver"},
+  {id:48,date:"Mar 23 juin",isoDate:"2026-06-23",group:"K",home:"Colombie",away:"Congo RD",time:"04h00★",venue:"Estadio Akron",city:"Zapopan"},{id:49,date:"Mer 24 juin",isoDate:"2026-06-24",group:"B",home:"Suisse",away:"Canada",time:"21h00",venue:"BC Place",city:"Vancouver"},
   {id:50,date:"Mer 24 juin",isoDate:"2026-06-24",group:"B",home:"Bosnie-Herzégovine",away:"Qatar",time:"21h00",venue:"Lumen Field",city:"Seattle"},
   {id:51,date:"Mer 24 juin",isoDate:"2026-06-24",group:"C",home:"Écosse",away:"Brésil",time:"00h00★",venue:"Hard Rock Stadium",city:"Miami"},
   {id:52,date:"Mer 24 juin",isoDate:"2026-06-24",group:"C",home:"Maroc",away:"Haïti",time:"00h00★",venue:"Mercedes-Benz Stadium",city:"Atlanta"},
@@ -119,7 +113,6 @@ const MATCHES = [
   {id:70,date:"Sam 27 juin",isoDate:"2026-06-27",group:"K",home:"Congo RD",away:"Ouzbékistan",time:"01h30★",venue:"Mercedes-Benz Stadium",city:"Atlanta"},
   {id:71,date:"Sam 27 juin",isoDate:"2026-06-27",group:"J",home:"Algérie",away:"Autriche",time:"04h00★",venue:"Arrowhead Stadium",city:"Kansas City"},
   {id:72,date:"Sam 27 juin",isoDate:"2026-06-27",group:"J",home:"Jordanie",away:"Argentine",time:"04h00★",venue:"AT&T Stadium",city:"Dallas"},
-  // 1/16
   {id:73,date:"Dim 28 juin",isoDate:"2026-06-28",phase:"1/16",home:"2e Gr. A",away:"2e Gr. B",time:"21h00",venue:"SoFi Stadium",city:"Los Angeles"},
   {id:74,date:"Lun 29 juin",isoDate:"2026-06-29",phase:"1/16",home:"1er Gr. E",away:"Meilleur 3e A/B/C/D/F",time:"22h30",venue:"Gillette Stadium",city:"Boston"},
   {id:75,date:"Lun 29 juin",isoDate:"2026-06-29",phase:"1/16",home:"1er Gr. F",away:"2e Gr. C",time:"03h00★",venue:"Estadio BBVA",city:"Monterrey"},
@@ -136,7 +129,6 @@ const MATCHES = [
   {id:86,date:"Ven 3 juil.",isoDate:"2026-07-03",phase:"1/16",home:"1er Gr. J",away:"2e Gr. H",time:"00h00★",venue:"Hard Rock Stadium",city:"Miami"},
   {id:87,date:"Ven 3 juil.",isoDate:"2026-07-03",phase:"1/16",home:"1er Gr. K",away:"Meilleur 3e D/E/I/J/L",time:"03h30★",venue:"Arrowhead Stadium",city:"Kansas City"},
   {id:88,date:"Ven 3 juil.",isoDate:"2026-07-03",phase:"1/16",home:"2e Gr. D",away:"2e Gr. G",time:"20h00",venue:"AT&T Stadium",city:"Dallas"},
-  // 1/8
   {id:89,date:"Sam 4 juil.",isoDate:"2026-07-04",phase:"1/8",home:"Vainqueur M74",away:"Vainqueur M77",time:"23h00",venue:"Lincoln Financial Field",city:"Philadelphie"},
   {id:90,date:"Sam 4 juil.",isoDate:"2026-07-04",phase:"1/8",home:"Vainqueur M73",away:"Vainqueur M75",time:"19h00",venue:"NRG Stadium",city:"Houston"},
   {id:91,date:"Dim 5 juil.",isoDate:"2026-07-05",phase:"1/8",home:"Vainqueur M76",away:"Vainqueur M78",time:"22h00",venue:"MetLife Stadium",city:"New York"},
@@ -145,19 +137,15 @@ const MATCHES = [
   {id:94,date:"Lun 6 juil.",isoDate:"2026-07-06",phase:"1/8",home:"Vainqueur M81",away:"Vainqueur M82",time:"02h00★",venue:"Lumen Field",city:"Seattle"},
   {id:95,date:"Mar 7 juil.",isoDate:"2026-07-07",phase:"1/8",home:"Vainqueur M86",away:"Vainqueur M88",time:"18h00",venue:"Mercedes-Benz Stadium",city:"Atlanta"},
   {id:96,date:"Mar 7 juil.",isoDate:"2026-07-07",phase:"1/8",home:"Vainqueur M85",away:"Vainqueur M87",time:"22h00",venue:"BC Place",city:"Vancouver"},
-  // QF
   {id:97,date:"Jeu 9 juil.",isoDate:"2026-07-09",phase:"1/4",home:"Vainqueur M89",away:"Vainqueur M90",time:"22h00",venue:"Gillette Stadium",city:"Boston"},
   {id:98,date:"Ven 10 juil.",isoDate:"2026-07-10",phase:"1/4",home:"Vainqueur M93",away:"Vainqueur M94",time:"21h00",venue:"SoFi Stadium",city:"Los Angeles"},
   {id:99,date:"Sam 11 juil.",isoDate:"2026-07-11",phase:"1/4",home:"Vainqueur M91",away:"Vainqueur M92",time:"23h00",venue:"Hard Rock Stadium",city:"Miami"},
   {id:100,date:"Sam 11 juil.",isoDate:"2026-07-11",phase:"1/4",home:"Vainqueur M95",away:"Vainqueur M96",time:"03h00★",venue:"Arrowhead Stadium",city:"Kansas City"},
-  // SF
   {id:101,date:"Mar 14 juil.",isoDate:"2026-07-14",phase:"1/2",home:"Vainqueur M97",away:"Vainqueur M98",time:"21h00",venue:"AT&T Stadium",city:"Dallas"},
   {id:102,date:"Mer 15 juil.",isoDate:"2026-07-15",phase:"1/2",home:"Vainqueur M99",away:"Vainqueur M100",time:"21h00",venue:"Mercedes-Benz Stadium",city:"Atlanta"},
   {id:103,date:"Sam 18 juil.",isoDate:"2026-07-18",phase:"3e place",home:"Perdant M101",away:"Perdant M102",time:"23h00",venue:"Hard Rock Stadium",city:"Miami"},
   {id:104,date:"Dim 19 juil.",isoDate:"2026-07-19",phase:"Finale",home:"Vainqueur M101",away:"Vainqueur M102",time:"21h00",venue:"MetLife Stadium",city:"New York"},
-];
-
-const PHASE_COLORS = {"1/16":"#7c3aed","1/8":"#db2777","1/4":"#ea580c","1/2":"#ca8a04","3e place":"#64748b","Finale":"#16a34a"};
+];const PHASE_COLORS = {"1/16":"#7c3aed","1/8":"#db2777","1/4":"#ea580c","1/2":"#ca8a04","3e place":"#64748b","Finale":"#16a34a"};
 const FILTERS = [
   {id:"all",label:"Tous (104)"},{id:"played",label:"✓ Terminés"},
   {id:"coming",label:"📅 À venir"},{id:"groupes",label:"⚽ Groupes"},
@@ -169,36 +157,59 @@ const getTodayISO = () => new Date().toISOString().slice(0,10);
 const isPlayed = m => m.isoDate < getTodayISO();
 const isToday  = m => m.isoDate === getTodayISO();
 
-/* ── API via proxy Vercel ────────────────────────────────── */
-async function fetchMatchSummary(match) {
+async function loadCachedSummaries() { return {}; }
+
+async function fetchLiveScores() {
+  try {
+    const res = await fetch("/api/scores");
+    if (!res.ok) return null;
+    return await res.json();
+  } catch (_) { return null; }
+}
+
+function normalizeName(name) {
+  const MAP = {
+    "Mexico":"Mexique","South Africa":"Afrique du Sud","Korea Republic":"Corée du Sud",
+    "Czechia":"Tchéquie","Bosnia and Herzegovina":"Bosnie-Herzégovine",
+    "United States":"États-Unis","Germany":"Allemagne","Netherlands":"Pays-Bas",
+    "Sweden":"Suède","Belgium":"Belgique","Egypt":"Égypte","Iran":"Iran",
+    "New Zealand":"Nouvelle-Zélande","Spain":"Espagne","Cape Verde":"Cap-Vert",
+    "Saudi Arabia":"Arabie Saoudite","France":"France","Senegal":"Sénégal",
+    "Iraq":"Irak","Norway":"Norvège","Argentina":"Argentine","Algeria":"Algérie",
+    "Austria":"Autriche","Jordan":"Jordanie","Portugal":"Portugal",
+    "DR Congo":"Congo RD","Uzbekistan":"Ouzbékistan","Colombia":"Colombie",
+    "England":"Angleterre","Croatia":"Croatie","Panama":"Panama",
+    "Brazil":"Brésil","Morocco":"Maroc","Haiti":"Haïti","Scotland":"Écosse",
+    "Australia":"Australie","Turkey":"Türkiye","Ivory Coast":"Côte d'Ivoire",
+    "Ecuador":"Équateur","Japan":"Japon","Tunisia":"Tunisie","Uruguay":"Uruguay",
+    "Switzerland":"Suisse","Canada":"Canada","Qatar":"Qatar","Ghana":"Ghana",
+    "Paraguay":"Paraguay",
+  };
+  return MAP[name] || name;
+}
+
+async function fetchMatchSummary(match, liveData) {
   const desc = match.group
     ? `Groupe ${match.group} — ${match.date} ${match.time} heure française`
     : `${match.phase} — ${match.date} ${match.time} heure française`;
-
-  const prompt = `Tu es un journaliste sportif expert CDM 2026. Recherche sur le web le résultat du match : ${match.home} vs ${match.away} — ${desc} — Stade : ${match.venue}, ${match.city}.
-
+  const scoreInfo = liveData ? `Score final : ${liveData.homeScore} - ${liveData.awayScore}` : "";
+  const prompt = `Tu es un journaliste sportif expert Coupe du Monde FIFA 2026. Donne-moi les faits marquants du match :
+Match : ${match.home} vs ${match.away} — ${desc}
+Stade : ${match.venue}, ${match.city}
+${scoreInfo}
 Réponds UNIQUEMENT en JSON valide sans markdown :
-{"score":"X - X","buteurs":["Nom (XX')"],"cartons_rouges":["Nom (XX')"],"fait_marquant":"Résumé journalistique 3-5 phrases avec moments décisifs, héros, stats clés.","homme_du_match":"Prénom Nom (pays)","affluence":"XX XXX spectateurs","found":true}
+{"score":"X - X","buteurs":["Nom (XX')"],"cartons_rouges":["Nom (XX')"],"fait_marquant":"Résumé 3-5 phrases.","homme_du_match":"Prénom Nom (pays)","affluence":"XX XXX spectateurs","found":true}
 Si introuvable : {"found":false}`;
-
   const res = await fetch("/api/summary", {
-    method: "POST",
-    headers: {"Content-Type":"application/json"},
-    body: JSON.stringify({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 1000,
-      tools: [{type:"web_search_20250305",name:"web_search"}],
-      messages: [{role:"user",content:prompt}],
-    }),
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({matchId:match.id, prompt}),
   });
   const data = await res.json();
-  const text = (data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("");
-  const m = text.replace(/```json|```/g,"").match(/\{[\s\S]*\}/);
-  if (!m) return null;
-  return JSON.parse(m[0]);
+  if (data.score || data.found===false) return data;
+  return null;
 }
 
-/* ── LiveBadge ──────────────────────────────────────────── */
 function LiveBadge() {
   const [on,setOn] = useState(true);
   useEffect(()=>{ const t=setInterval(()=>setOn(x=>!x),800); return()=>clearInterval(t); },[]);
@@ -209,43 +220,44 @@ function LiveBadge() {
   );
 }
 
-/* ── MatchCard ──────────────────────────────────────────── */
-function MatchCard({match,onGetSummary,summaryData,loadingId}) {
-  const played = isPlayed(match), today = isToday(match);
-  const loading = loadingId===match.id;
-  const ok = summaryData && summaryData.found!==false;
-  const pc = match.phase ? PHASE_COLORS[match.phase] : null;
+function MatchCard({match,onGetSummary,summaryData,loadingId,liveScore}) {
+  const played=isPlayed(match),today=isToday(match);
+  const loading=loadingId===match.id;
+  const ok=summaryData&&summaryData.found!==false;
+  const pc=match.phase?PHASE_COLORS[match.phase]:null;
+  const isLiveNow=liveScore&&(liveScore.status==="IN_PLAY"||liveScore.status==="PAUSED");
+  const isFinished=liveScore&&liveScore.status==="FINISHED";
+  const hasLiveScore=liveScore&&liveScore.homeScore!==null&&liveScore.homeScore!==undefined;
+  const scoreDisplay=ok?summaryData.score:hasLiveScore?`${liveScore.homeScore} - ${liveScore.awayScore}`:null;
 
   return (
     <div style={{
-      background: match.phase==="Finale" ? "linear-gradient(135deg,rgba(22,163,74,.12),rgba(5,150,105,.06))"
-        : match.france ? "linear-gradient(135deg,rgba(0,35,149,.18),rgba(237,41,57,.08))"
-        : played ? "rgba(255,255,255,.05)" : "rgba(255,255,255,.03)",
+      background:match.phase==="Finale"?"linear-gradient(135deg,rgba(22,163,74,.12),rgba(5,150,105,.06))":match.france?"linear-gradient(135deg,rgba(0,35,149,.18),rgba(237,41,57,.08))":played?"rgba(255,255,255,.05)":"rgba(255,255,255,.03)",
       border:`1px solid ${match.phase==="Finale"?"rgba(52,211,153,.35)":match.france?"rgba(96,165,250,.4)":played?"rgba(255,255,255,.1)":"rgba(255,255,255,.05)"}`,
       borderLeft:`4px solid ${pc||(match.france?"#3b82f6":played?"#22c55e":"#334155")}`,
       borderRadius:12,padding:"12px 14px",marginBottom:8,
     }}>
-      {/* header */}
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8,flexWrap:"wrap",gap:4}}>
         <div style={{display:"flex",gap:5,alignItems:"center",flexWrap:"wrap"}}>
           {match.group&&<span style={{fontSize:11,fontWeight:700,background:"rgba(200,160,32,.15)",color:"#f5d060",padding:"2px 7px",borderRadius:4}}>Gr. {match.group}</span>}
           {match.phase&&<span style={{fontSize:11,fontWeight:700,background:`${pc}22`,color:pc,padding:"2px 7px",borderRadius:4}}>{match.phase}</span>}
-          {played&&<span style={{fontSize:10,fontWeight:700,background:"rgba(34,197,94,.15)",color:"#4ade80",padding:"2px 7px",borderRadius:4}}>✓ TERMINÉ</span>}
-          {today&&<LiveBadge/>}
+          {isFinished&&<span style={{fontSize:10,fontWeight:700,background:"rgba(34,197,94,.15)",color:"#4ade80",padding:"2px 7px",borderRadius:4}}>✓ TERMINÉ</span>}
+          {isLiveNow&&<><LiveBadge/>{liveScore.minute&&<span style={{fontSize:11,color:"#f87171",fontWeight:700}}>{liveScore.minute}'</span>}</>}
+          {!isFinished&&!isLiveNow&&played&&<span style={{fontSize:10,fontWeight:700,background:"rgba(34,197,94,.15)",color:"#4ade80",padding:"2px 7px",borderRadius:4}}>✓ TERMINÉ</span>}
+          {!liveScore&&today&&<LiveBadge/>}
           {match.france&&<span style={{fontSize:10,color:"#93c5fd"}}>🇫🇷</span>}
         </div>
-        <span style={{fontSize:12,fontWeight:700,color:today?"#f87171":"#60a5fa"}}>{match.time}</span>
+        <span style={{fontSize:12,fontWeight:700,color:isLiveNow?"#f87171":"#60a5fa"}}>{match.time}</span>
       </div>
-      {/* teams */}
-      {ok ? (
+      {scoreDisplay?(
         <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
           <span style={{fontSize:18}}>{f(match.home)}</span>
           <span style={{fontSize:14,fontWeight:700,color:"#e2e8f0",flex:1}}>{match.home}</span>
-          <span style={{fontSize:22,fontWeight:900,color:"#f5d060",background:"rgba(200,160,32,.12)",padding:"2px 14px",borderRadius:8,letterSpacing:2}}>{summaryData.score}</span>
+          <span style={{fontSize:22,fontWeight:900,color:isLiveNow?"#f87171":"#f5d060",background:isLiveNow?"rgba(239,68,68,.12)":"rgba(200,160,32,.12)",padding:"2px 14px",borderRadius:8,letterSpacing:2}}>{scoreDisplay}</span>
           <span style={{fontSize:14,fontWeight:700,color:"#e2e8f0",flex:1,textAlign:"right"}}>{match.away}</span>
           <span style={{fontSize:18}}>{f(match.away)}</span>
         </div>
-      ) : (
+      ):(
         <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
           <span style={{fontSize:18}}>{f(match.home)}</span>
           <span style={{fontSize:14,fontWeight:700,color:"#e2e8f0",flex:1}}>{match.home}</span>
@@ -254,9 +266,8 @@ function MatchCard({match,onGetSummary,summaryData,loadingId}) {
           <span style={{fontSize:18}}>{f(match.away)}</span>
         </div>
       )}
-      <div style={{fontSize:11,color:"#64748b",marginBottom:(played||ok)?10:0}}>📍 {match.venue} · {match.city} <span style={{color:"#334155",marginLeft:4}}>{match.time.includes("★")?"★ lendemain matin":""}</span></div>
-      {/* summary */}
-      {ok && (
+      <div style={{fontSize:11,color:"#64748b",marginBottom:(played||ok)?10:0}}>📍 {match.venue} · {match.city}</div>
+      {ok&&(
         <div style={{borderTop:"1px solid rgba(255,255,255,.06)",paddingTop:10}}>
           <div style={{display:"flex",flexWrap:"wrap",gap:8,marginBottom:10}}>
             {summaryData.buteurs?.length>0&&(
@@ -286,64 +297,92 @@ function MatchCard({match,onGetSummary,summaryData,loadingId}) {
           {summaryData.affluence&&<div style={{marginTop:6,fontSize:11,color:"#475569"}}>🏟 {summaryData.affluence}</div>}
         </div>
       )}
-      {played&&!ok&&(
+      {(played||isFinished)&&!ok&&(
         <button onClick={()=>onGetSummary(match)} disabled={loading} style={{marginTop:8,width:"100%",padding:"8px 14px",borderRadius:8,border:"1px solid rgba(200,160,32,.3)",background:loading?"rgba(200,160,32,.05)":"rgba(200,160,32,.1)",color:loading?"#64748b":"#f5d060",fontSize:12,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
-          {loading?<><span style={{display:"inline-block",animation:"spin 1s linear infinite"}}>⏳</span>Génération du résumé…</>:<>✨ Obtenir le résumé IA</>}
+          {loading?<><span style={{display:"inline-block",animation:"spin 1s linear infinite"}}>⏳</span>Génération…</>:<>✨ Obtenir le résumé IA</>}
         </button>
       )}
     </div>
   );
-}
-
-/* ── App ────────────────────────────────────────────────── */
-function App() {
+}function App() {
   const [filter,setFilter]     = useState("all");
   const [groupF,setGroupF]     = useState(null);
   const [summaries,setSummaries] = useState({});
   const [loadingId,setLoadingId] = useState(null);
   const [lastSync,setLastSync]   = useState(new Date());
   const [autoLoad,setAutoLoad]   = useState(false);
+  const [liveScores,setLiveScores] = useState({});
+  const [liveStatus,setLiveStatus] = useState("loading");
   const [,setTick] = useState(0);
+
+  const refreshScores = useCallback(async()=>{
+    setLiveStatus("loading");
+    const data = await fetchLiveScores();
+    if(data&&data.matches){
+      const scoreMap={};
+      data.matches.forEach(m=>{
+        const homeNorm=normalizeName(m.homeTeam);
+        const awayNorm=normalizeName(m.awayTeam);
+        const found=MATCHES.find(local=>
+          (local.home===homeNorm&&local.away===awayNorm)||
+          (local.home===awayNorm&&local.away===homeNorm)
+        );
+        if(found) scoreMap[found.id]={status:m.status,homeScore:m.homeScore,awayScore:m.awayScore,minute:m.minute,winner:m.winner};
+      });
+      setLiveScores(scoreMap);
+      setLastSync(new Date());
+      setLiveStatus("ok");
+    } else {
+      setLiveStatus("error");
+    }
+  },[]);
+
+  useEffect(()=>{
+    refreshScores();
+    const interval=setInterval(refreshScores,60000);
+    return()=>clearInterval(interval);
+  },[refreshScores]);
+
   useEffect(()=>{ const t=setInterval(()=>setTick(x=>x+1),60000); return()=>clearInterval(t); },[]);
 
   const handleGetSummary = useCallback(async(match)=>{
     if(loadingId) return;
     setLoadingId(match.id);
     try {
-      const data = await fetchMatchSummary(match);
+      const liveData=liveScores[match.id]||null;
+      const data=await fetchMatchSummary(match,liveData);
       setSummaries(p=>({...p,[match.id]:data||{found:false}}));
     } catch(e) {
       setSummaries(p=>({...p,[match.id]:{found:false}}));
     }
     setLoadingId(null);
     setLastSync(new Date());
-  },[loadingId]);
+  },[loadingId,liveScores]);
 
   const handleAutoLoad = async()=>{
     if(loadingId||autoLoad) return;
     setAutoLoad(true);
-    const todo = MATCHES.filter(m=>isPlayed(m)&&!summaries[m.id]).slice(0,3);
+    const todo=MATCHES.filter(m=>isPlayed(m)&&!summaries[m.id]).slice(0,3);
     for(const m of todo) await handleGetSummary(m);
     setAutoLoad(false);
   };
 
-  const filtered = MATCHES.filter(m=>{
-    if(filter==="played"   && !isPlayed(m)) return false;
-    if(filter==="coming"   && (isPlayed(m)||isToday(m))) return false;
-    if(filter==="groupes"  && !m.group) return false;
-    if(filter==="knockout" && !m.phase) return false;
-    if(filter==="france"   && !m.france) return false;
-    if(groupF && m.group!==groupF) return false;
+  const filtered=MATCHES.filter(m=>{
+    if(filter==="played"   &&!isPlayed(m)) return false;
+    if(filter==="coming"   &&(isPlayed(m)||isToday(m))) return false;
+    if(filter==="groupes"  &&!m.group) return false;
+    if(filter==="knockout" &&!m.phase) return false;
+    if(filter==="france"   &&!m.france) return false;
+    if(groupF&&m.group!==groupF) return false;
     return true;
   });
 
-  const byDate = filtered.reduce((a,m)=>{ if(!a[m.date])a[m.date]=[]; a[m.date].push(m); return a; },{});
-  const playedCount = MATCHES.filter(isPlayed).length;
-  const summaryCount = Object.values(summaries).filter(s=>s&&s.found!==false).length;
+  const byDate=filtered.reduce((a,m)=>{ if(!a[m.date])a[m.date]=[]; a[m.date].push(m); return a; },{});
+  const playedCount=MATCHES.filter(isPlayed).length;
+  const summaryCount=Object.values(summaries).filter(s=>s&&s.found!==false).length;
 
   return (
     <div style={{minHeight:"100vh",background:"linear-gradient(135deg,#080c18 0%,#0d1b3e 55%,#08101e 100%)",fontFamily:"Georgia,'Times New Roman',serif",color:"#e8e0d0"}}>
-      {/* Header */}
       <div style={{position:"relative",zIndex:1,borderBottom:"1px solid rgba(200,160,32,.22)",background:"linear-gradient(180deg,rgba(200,160,20,.13) 0%,transparent 100%)",padding:"20px 16px 14px"}}>
         <div style={{maxWidth:860,margin:"0 auto"}}>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",flexWrap:"wrap",gap:8}}>
@@ -359,7 +398,6 @@ function App() {
               <div style={{fontSize:10,color:"#475569"}}>🔄 {lastSync.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"})}</div>
             </div>
           </div>
-          {/* Stats */}
           <div style={{display:"flex",gap:10,marginTop:12,flexWrap:"wrap",alignItems:"center"}}>
             {[{v:MATCHES.length,l:"Matchs"},{v:playedCount,l:"Joués",c:"#4ade80"},{v:MATCHES.length-playedCount,l:"À venir",c:"#60a5fa"},{v:summaryCount,l:"Résumés IA",c:"#f5d060"}].map(s=>(
               <div key={s.l} style={{background:"rgba(255,255,255,.04)",border:"1px solid rgba(255,255,255,.07)",borderRadius:8,padding:"5px 11px",textAlign:"center"}}>
@@ -367,6 +405,9 @@ function App() {
                 <div style={{fontSize:10,color:"#64748b",letterSpacing:1,textTransform:"uppercase"}}>{s.l}</div>
               </div>
             ))}
+            <div style={{fontSize:11,color:liveStatus==="ok"?"#4ade80":liveStatus==="error"?"#f87171":"#64748b",display:"flex",alignItems:"center",gap:4}}>
+              {liveStatus==="ok"?<>🟢 Scores live</>:liveStatus==="error"?<>🔴 Scores indispo</>:<>⏳ Chargement…</>}
+            </div>
             {playedCount>0&&(
               <button onClick={handleAutoLoad} disabled={!!loadingId||autoLoad} style={{background:"rgba(200,160,32,.12)",border:"1px solid rgba(200,160,32,.3)",borderRadius:8,padding:"5px 12px",color:"#f5d060",fontSize:11,display:"flex",alignItems:"center",gap:5}}>
                 {autoLoad?<><span style={{animation:"spin 1s linear infinite"}}>⏳</span>Chargement…</>:<>✨ Résumés auto (3)</>}
@@ -374,9 +415,7 @@ function App() {
             )}
           </div>
         </div>
-      </div>
-      {/* Filtres */}
-      <div style={{position:"relative",zIndex:1,padding:"12px 16px 0",maxWidth:860,margin:"0 auto"}}>
+      </div><div style={{position:"relative",zIndex:1,padding:"12px 16px 0",maxWidth:860,margin:"0 auto"}}>
         <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:8}}>
           {FILTERS.map(fi=>(
             <button key={fi.id} onClick={()=>setFilter(fi.id)} style={{padding:"6px 13px",borderRadius:20,border:"1px solid",borderColor:filter===fi.id?"#c8a020":"rgba(255,255,255,.1)",background:filter===fi.id?"rgba(200,160,32,.2)":"transparent",color:filter===fi.id?"#f5d060":"#94a3b8",fontSize:12,fontWeight:filter===fi.id?700:400}}>
@@ -393,7 +432,6 @@ function App() {
           </div>
         )}
       </div>
-      {/* Liste matchs */}
       <div style={{position:"relative",zIndex:1,padding:"0 16px 40px",maxWidth:860,margin:"0 auto"}}>
         {Object.entries(byDate).map(([date,matches])=>(
           <div key={date} style={{marginBottom:22}}>
@@ -401,13 +439,13 @@ function App() {
               <span>{date}</span>
               <span style={{fontWeight:400,color:"#64748b",fontSize:11}}>{matches.length} match{matches.length>1?"s":""}{matches.some(isPlayed)?` · ${matches.filter(isPlayed).length} terminé${matches.filter(isPlayed).length>1?"s":""}`:""}</span>
             </div>
-            {matches.map(m=><MatchCard key={m.id} match={m} onGetSummary={handleGetSummary} summaryData={summaries[m.id]} loadingId={loadingId}/>)}
+            {matches.map(m=><MatchCard key={m.id} match={m} onGetSummary={handleGetSummary} summaryData={summaries[m.id]} loadingId={loadingId} liveScore={liveScores[m.id]}/>)}
           </div>
         ))}
         {filtered.length===0&&<div style={{textAlign:"center",padding:"60px 20px",color:"#64748b"}}>Aucun match pour ce filtre</div>}
       </div>
       <div style={{position:"relative",zIndex:1,textAlign:"center",padding:"0 16px 28px",color:"#1e293b",fontSize:11}}>
-        AO World Cup 26 · 104 matchs · Résumés IA · CDM 2026 · Horaires CEST UTC+2 · ★ = lendemain matin
+        AO World Cup 26 · 104 matchs · Scores live · Résumés IA · CDM 2026 · Horaires CEST UTC+2
       </div>
     </div>
   );
