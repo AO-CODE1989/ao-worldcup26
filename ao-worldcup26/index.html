@@ -329,7 +329,7 @@ const isLiveNow=liveScore&&(liveScore.status==="IN_PLAY"||liveScore.status==="PA
         );
         if(found) scoreMap[found.id]={status:m.status,homeScore:m.homeScore,awayScore:m.awayScore,minute:m.minute,winner:m.winner};
       });
-      setLiveScores(scoreMap);
+      if(Object.keys(scoreMap).length>0) setLiveScores(scoreMap);
       setLastSync(new Date());
       setLiveStatus("ok");
     } else {
