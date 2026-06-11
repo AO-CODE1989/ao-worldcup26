@@ -225,9 +225,9 @@ function MatchCard({match,onGetSummary,summaryData,loadingId,liveScore}) {
   const loading=loadingId===match.id;
   const ok=summaryData&&summaryData.found!==false;
   const pc=match.phase?PHASE_COLORS[match.phase]:null;
-  const isLiveNow=liveScore&&(liveScore.status==="IN_PLAY"||liveScore.status==="PAUSED");
-  const isFinished=liveScore&&liveScore.status==="FINISHED";
-  const hasLiveScore=liveScore&&liveScore.homeScore!==null&&liveScore.homeScore!==undefined;
+const isLiveNow=liveScore&&(liveScore.status==="IN_PLAY"||liveScore.status==="PAUSED")&&isToday(match);
+  const isFinished=liveScore&&liveScore.status==="FINISHED"&&(isPlayed(match)||isToday(match));
+  const hasLiveScore=liveScore&&liveScore.homeScore!==null&&liveScore.homeScore!==undefined&&(isPlayed(match)||isToday(match));
   const scoreDisplay=ok?summaryData.score:hasLiveScore?`${liveScore.homeScore} - ${liveScore.awayScore}`:null;
 
   return (
@@ -339,11 +339,11 @@ function MatchCard({match,onGetSummary,summaryData,loadingId,liveScore}) {
 
   useEffect(()=>{
     refreshScores();
-    const interval=setInterval(refreshScores,60000);
+    const interval=setInterval(refreshScores,20000);
     return()=>clearInterval(interval);
   },[refreshScores]);
 
-  useEffect(()=>{ const t=setInterval(()=>setTick(x=>x+1),60000); return()=>clearInterval(t); },[]);
+  useEffect(()=>{ const t=setInterval(()=>setTick(x=>x+1),20000); return()=>clearInterval(t); },[]);
 
   const handleGetSummary = useCallback(async(match)=>{
     if(loadingId) return;
@@ -407,7 +407,8 @@ function MatchCard({match,onGetSummary,summaryData,loadingId,liveScore}) {
             ))}
             <div style={{fontSize:11,color:liveStatus==="ok"?"#4ade80":liveStatus==="error"?"#f87171":"#64748b",display:"flex",alignItems:"center",gap:4}}>
               {liveStatus==="ok"?<>🟢 Scores live</>:liveStatus==="error"?<>🔴 Scores indispo</>:<>⏳ Chargement…</>}
-            </div>
+            </div> 
+           <button onClick={refreshScores} style={{background:"rgba(96,165,250,.12)",border:"1px solid rgba(96,165,250,.3)",borderRadius:8,padding:"5px 12px",color:"#60a5fa",fontSize:11,display:"flex",alignItems:"center",gap:5}}>🔄 Actualiser</button>           
             {playedCount>0&&(
               <button onClick={handleAutoLoad} disabled={!!loadingId||autoLoad} style={{background:"rgba(200,160,32,.12)",border:"1px solid rgba(200,160,32,.3)",borderRadius:8,padding:"5px 12px",color:"#f5d060",fontSize:11,display:"flex",alignItems:"center",gap:5}}>
                 {autoLoad?<><span style={{animation:"spin 1s linear infinite"}}>⏳</span>Chargement…</>:<>✨ Résumés auto (3)</>}
